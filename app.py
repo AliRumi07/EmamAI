@@ -16,7 +16,7 @@ with open('chunks.txt', 'r', encoding='utf-8') as f:
 chunks = [chunk.strip() for chunk in content.split('\n\n') if chunk.strip()]
 
 print("Connecting to Groq API...")
-client = Groq(api_key="YOUR_GROQ_API_KEY")
+client = Groq(api_key="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")
 
 def semantic_search(user_question, top_k=100):
     q_emb = embedding_model.encode([user_question])[0]
