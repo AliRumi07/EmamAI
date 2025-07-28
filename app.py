@@ -72,7 +72,7 @@ If asked about unrelated technical, coding, AI model, math, politics, modern phi
 "I’m sorry, but I can only help with Islamic topics based on verified sources."
 """
 
-def semantic_search(user_question, top_k=100):
+def semantic_search(user_question, top_k=20):
     q_emb = embedding_model.encode([user_question])[0]
     scores = np.dot(embeddings, q_emb) / (np.linalg.norm(embeddings, axis=1) * np.linalg.norm(q_emb))
     top_idx = np.argsort(scores)[::-1][:top_k]
