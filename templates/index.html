@@ -1,20 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EMAM AI Chatbot</title>
-  <link rel="stylesheet" href="/static/style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMAM AI Chat</title>
+<style>
+body { font-family: sans-serif; margin: 30px; background: #f9f9f9; color: #333; }
+h2 { color: #006064; }
+textarea { width: 100%; height: 80px; font-size: 16px; }
+button { margin-top: 10px; padding: 10px 20px; background: #006064; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+#answer { margin-top: 20px; background: #fff; padding: 15px; border-radius: 5px; white-space: pre-wrap; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+</style>
 </head>
 <body>
-  <div class="chat-container">
-    <h2>EMAM AI Chatbot</h2>
-    <div id="chat-box"></div>
-    <div class="input-container">
-      <input type="text" id="question-input" placeholder="Type your question..." />
-      <button onclick="sendQuestion()">Ask</button>
-    </div>
-  </div>
-<script src="/static/script.js"></script>
+<h2>EMAM AI Chatbot</h2>
+<p>Ask your Islamic research question below:</p>
+<textarea id="question"></textarea><br>
+<button onclick="ask()">Ask</button>
+<div id="answer"></div>
+
+<script>
+function ask() {
+    const q = document.getElementById("question").value.trim();
+    if (!q) return alert("Please enter a question!");
+    document.getElementById("answer").innerText = "Thinking...";
+    fetch("/ask", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({question: q})
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.answer) document.getElementById("answer").innerText = data.answer;
+        else document.getElementById("answer").innerText = "Error: " + (data.error || "Unknown error");
+    })
+    .catch(err => { document.getElementById("answer").innerText = "Error: " + err; });
+}
+</script>
 </body>
 </html>
